@@ -77,7 +77,7 @@ import {defineComponent, onMounted, ref, reactive, toRef} from 'vue';
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from "@ant-design/icons-vue"; // @ is an alias to /src
 import axios from 'axios';
 
-const listData: any = [];
+/*const listData: any = [];
 for (let i = 0; i < 23; i++) {
     listData.push({
         href: 'https://www.antdv.com/',
@@ -88,7 +88,7 @@ for (let i = 0; i < 23; i++) {
         content:
             'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
     });
-}
+}*/
 
 export default defineComponent({
     name: 'Home',
@@ -98,17 +98,22 @@ export default defineComponent({
 
         onMounted(() => {
             console.log("onMounted");
-            axios.get( "/ebook/list").then((response) => {
+            axios.get( "/ebook/list",{
+                params:{
+                    page: 1,
+                    size: 1000
+                }
+                }).then((response) => {
                 const data = response.data;
-                ebooks.value = data.content;
-                ebooks1.books = data.content;
+                ebooks.value = data.content.list;
+                // ebooks1.books = data.content;
             });
         });
 
         return {
             ebooks,
-            ebooks2: toRef(ebooks1, "books"),
-            listData,
+            // ebooks2: toRef(ebooks1, "books"),
+            // listData,
             pagination : {
                 onChange: (page: any) => {
                     console.log(page);
