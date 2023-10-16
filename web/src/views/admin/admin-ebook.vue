@@ -16,7 +16,7 @@
                 </template>
                 <template v-slot:action="{ text, record }">
                     <a-space size="small">
-                        <a-button type="primary" @click="edit">
+                        <a-button type="primary" @click="edit(record)">
                             编辑
                         </a-button>
                         <a-button type="danger">
@@ -33,15 +33,6 @@
         v-model:visible="modalVisible"
         :confirm-loading="modalLoading"
         @ok="handleModalOk">
-        <P>test</P>
-    </a-modal>
-
-<!--    <a-modal
-        title="电子书表单"
-        v-model:visible="modalVisible"
-        :confirm-loading="modalLoading"
-        @ok="handleModalOk"
-    >
         <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
             <a-form-item label="封面">
                 <a-input v-model:value="ebook.cover" />
@@ -49,18 +40,18 @@
             <a-form-item label="名称">
                 <a-input v-model:value="ebook.name" />
             </a-form-item>
-            <a-form-item label="分类">
-                <a-cascader
-                    v-model:value="categoryIds"
-                    :field-names="{ label: 'name', value: 'id', children: 'children' }"
-                    :options="level1"
-                />
+            <a-form-item label="分类一">
+                <a-input v-model:value="ebook.category1Id" />
+            </a-form-item>
+            <a-form-item label="分类二">
+                <a-input v-model:value="ebook.category2Id" />
             </a-form-item>
             <a-form-item label="描述">
                 <a-input v-model:value="ebook.description" type="textarea" />
             </a-form-item>
         </a-form>
-    </a-modal>-->
+    </a-modal>
+
 </template>
 
 <script lang="ts">
@@ -150,6 +141,7 @@ export default defineComponent({
             });
         };
 
+        const ebook = ref({});
         const modalVisible = ref(false);
         const modalLoading = ref(false);
 
@@ -162,8 +154,9 @@ export default defineComponent({
             }, 2000);
         };
 
-        const edit = () => {
+        const edit = (record: any) => {
             modalVisible.value = true;
+            ebook.value = record;
         };
 
         onMounted(() => {
@@ -184,6 +177,7 @@ export default defineComponent({
             modalVisible,
             modalLoading,
             handleModalOk,
+            ebook,
         }
     }
 });
