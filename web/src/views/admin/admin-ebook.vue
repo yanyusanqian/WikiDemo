@@ -3,6 +3,11 @@
         <a-layout-content
                 :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
         >
+            <P>
+                <a-button type="primary" @click="add()" size="large">
+                    新增
+                </a-button>
+            </P>
             <a-table
                     :columns="columns"
                     :row-key="record => record.id"
@@ -19,9 +24,16 @@
                         <a-button type="primary" @click="edit(record)">
                             编辑
                         </a-button>
-                        <a-button type="danger">
-                            删除
-                        </a-button>
+                        <a-popconfirm
+                            title="删除后不可恢复，确认删除?"
+                            ok-text="是"
+                            cancel-text="否"
+                            @confirm="handleDelete(record.id)">
+                            <a-button type="danger">
+                                删除
+                            </a-button>
+                        </a-popconfirm>
+
                     </a-space>
                 </template>
             </a-table>
@@ -57,14 +69,21 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
+import wrapperRaf from "ant-design-vue/lib/_util/raf";
 
 export default defineComponent({
     name: 'AdminEbook',
+
+    computed: {
+        wrapperRaf() {
+            return wrapperRaf
+        }
+    },
     setup() {
         const ebooks = ref();
         const pagination = ref({
             current: 1,
-            pageSize: 2,
+            pageSize: 4,
             total: 0
         });
         const loading = ref(false);
@@ -123,6 +142,7 @@ export default defineComponent({
                 loading.value = false;
                 const data = response.data;
                 ebooks.value = data.content.list;
+                console.log(ebooks.value);
 
                 // 重置分页按钮
                 pagination.value.current = params.page;
@@ -168,6 +188,27 @@ export default defineComponent({
             ebook.value = record;
         };
 
+        /**
+         * 新增
+         */
+        const add = () => {
+            modalVisible.value = true;
+            ebook.value = {};
+        }
+
+        const handleDelete = (id: number) => {
+            axios.delete("/ebook/delete/" + id).then((response) => {
+                const data = response.data;
+                if (data.success) {
+                    // 重新加载页面
+                    handleQuery({
+                        page: pagination.value.current,
+                        size: pagination.value.pageSize
+                    })
+                }
+            });
+        };
+
         onMounted(() => {
             handleQuery({
                 // 和后端名称要一致才能正确映射
@@ -182,6 +223,10 @@ export default defineComponent({
             columns,
             loading,
             handleTableChange,
+
+            add,
+            handleDelete,
+
             edit,
             modalVisible,
             modalLoading,

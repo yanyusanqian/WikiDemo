@@ -10,6 +10,8 @@ import com.jiawa.wiki.req.EbookSaveReq;
 import com.jiawa.wiki.resp.EbookQueryResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.utils.CopyUtils;
+import com.jiawa.wiki.utils.SnowFlake;
+import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
+    @Resource
+    private SnowFlake snowFlake;
+
     public PageResp<EbookQueryResp> list(EbookQueryReq ebookQueryReq){
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
@@ -33,6 +38,7 @@ public class EbookService {
         }
         PageHelper.startPage(ebookQueryReq.getPage(), ebookQueryReq.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
+        LOG.info("EEEEEEEEEbooklist:{}",ebookList);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
         // 总行数
@@ -55,6 +61,8 @@ public class EbookService {
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
 
+        LOG.info("PPPPPageResp:{}",pageResp);
+
         return pageResp;
     }
 
@@ -62,13 +70,19 @@ public class EbookService {
      * 保存，由id判断是更新还是新增
      */
     public void save(EbookSaveReq ebookSaveReq){
+        LOG.info("EbookSaveReq.toString():{}" ,ebookSaveReq.toString());
         Ebook ebook = CopyUtils.copy(ebookSaveReq, Ebook.class);
         if(ObjectUtils.isEmpty(ebookSaveReq.getId())){
             // 新增
+            ebook.setId(snowFlake.nextId());
             ebookMapper.insert(ebook);
         }else{
             // 更新
             ebookMapper.updateByPrimaryKey(ebook);
         }
+    }
+
+    public void delete(Long id){
+        ebookMapper.deleteByPrimaryKey(id);
     }
 }
