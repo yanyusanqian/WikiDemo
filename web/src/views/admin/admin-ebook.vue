@@ -70,6 +70,7 @@
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
 import wrapperRaf from "ant-design-vue/lib/_util/raf";
+import {message} from "ant-design-vue";
 
 export default defineComponent({
     name: 'AdminEbook',
@@ -141,12 +142,17 @@ export default defineComponent({
             }).then((response) => {
                 loading.value = false;
                 const data = response.data;
-                ebooks.value = data.content.list;
-                console.log(ebooks.value);
+                if(data.success){
+                    ebooks.value = data.content.list;
+                    console.log(ebooks.value);
 
-                // 重置分页按钮
-                pagination.value.current = params.page;
-                pagination.value.total = data.content.total;
+                    // 重置分页按钮
+                    pagination.value.current = params.page;
+                    pagination.value.total = data.content.total;
+                }else{
+                    message.error(data.message);
+                }
+
             });
         };
 

@@ -10,6 +10,7 @@ import com.jiawa.wiki.service.EbookService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/ebook")
@@ -21,7 +22,7 @@ public class EbookController {
 
 
     @GetMapping("/list")
-    public CommonResp list(EbookQueryReq ebookQueryReq){
+    public CommonResp list(@Valid EbookQueryReq ebookQueryReq){
         CommonResp<PageResp<EbookQueryResp>> response = new CommonResp<>();
         PageResp<EbookQueryResp> list = ebookService.list(ebookQueryReq);
         response.setContent(list);
