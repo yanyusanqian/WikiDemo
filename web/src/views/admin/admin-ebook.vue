@@ -86,6 +86,7 @@ import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
 import wrapperRaf from "ant-design-vue/lib/_util/raf";
 import {message} from "ant-design-vue";
+import {Tool} from "@/util/tool";
 
 export default defineComponent({
     name: 'AdminEbook',
@@ -209,9 +210,13 @@ export default defineComponent({
             });
         };
 
+        /**
+         * 编辑
+         * @param record
+         */
         const edit = (record: any) => {
             modalVisible.value = true;
-            ebook.value = record;
+            ebook.value = Tool.copy(record);
         };
 
         /**
