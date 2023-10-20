@@ -1,6 +1,10 @@
 package com.jiawa.wiki.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+
 public class Ebook {
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
 
     private String name;
