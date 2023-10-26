@@ -34,6 +34,9 @@
                 <template #cover="{ text: cover }">
                     <img v-if="cover" :src="cover" alt="avatar"/>
                 </template>
+                <template v-slot:category="{ text, record }">
+                    <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
+                </template>
                 <template v-slot:action="{ text, record }">
                     <a-space size="small">
                         <a-button type="primary" @click="edit(record)">
@@ -121,12 +124,7 @@ export default defineComponent({
             },
             {
                 title: '分类一',
-                key: 'category1Id',
-                dataIndex: 'category1Id'
-            }, {
-                title: '分类二',
-                key: 'category2Id',
-                dataIndex: 'category2Id'
+                slots: {customRender: 'category'}
             },
             {
                 title: '文档数',
@@ -256,13 +254,14 @@ export default defineComponent({
          */
 
         const level1 = ref();
+        let categorys: any;
         const handleQueryCategory = () =>{
           loading.value= true;
             axios.get("/category/all").then((response) => {
                 loading.value = false;
                 const data = response.data;
                 if (data.success) {
-                    const categorys = data.content;
+                    categorys = data.content;
                     console.log("原始数组:", categorys);
 
                     level1.value = [];
@@ -272,6 +271,17 @@ export default defineComponent({
                     message.error(data.message);
                 }
             });
+        };
+
+        const getCategoryName = (cid : number) => {
+          let result = "";
+          categorys.forEach((item: any) => {
+              if(item.id === cid){
+                  result = item.name;
+                  console.log("***"+ item.name);
+              }
+          });
+          return result;
         };
 
         onMounted(() => {
@@ -300,6 +310,7 @@ export default defineComponent({
             ebook,
             categoryIds,
             level1,
+            getCategoryName,
 
             param,
             handleQuery,
