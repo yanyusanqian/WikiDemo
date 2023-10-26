@@ -13,32 +13,32 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/categor")
+@RequestMapping("/category")
 public class CategoryController {
     
     @Resource
-    private CategoryService categorService;
+    private CategoryService categoryService;
 
 
     @GetMapping("/list")
-    public CommonResp list(@Valid CategoryQueryReq categorQueryReq){
+    public CommonResp list(@Valid CategoryQueryReq categoryQueryReq){
         CommonResp<PageResp<CategoryQueryResp>> response = new CommonResp<>();
-        PageResp<CategoryQueryResp> list = categorService.list(categorQueryReq);
+        PageResp<CategoryQueryResp> list = categoryService.list(categoryQueryReq);
         response.setContent(list);
         return response;
     }
 
     @PostMapping ("/save")
-    public CommonResp save(@Valid @RequestBody CategorySaveReq categorSaveReq){
+    public CommonResp save(@Valid @RequestBody CategorySaveReq categorySaveReq){
         CommonResp response = new CommonResp<>();
-        categorService.save(categorSaveReq);
+        categoryService.save(categorySaveReq);
         return response;
     }
 
     @DeleteMapping("/delete/{id}")
     public CommonResp delete(@PathVariable Long id){
         CommonResp response = new CommonResp<>();
-        categorService.delete(id);
+        categoryService.delete(id);
         return response;
     }
 }

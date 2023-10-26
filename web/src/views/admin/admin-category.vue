@@ -97,41 +97,24 @@ export default defineComponent({
         const categorys = ref();
         const pagination = ref({
             current: 1,
-            pageSize: 4,
+            pageSize: 10,
             total: 0
         });
         const loading = ref(false);
 
         const columns = [
             {
-                title: '封面',
-                dataIndex: 'cover',
-                slots: {customRender: 'cover'}
-            },
-            {
                 title: '名称',
                 dataIndex: 'name'
             },
             {
-                title: '分类一',
-                key: 'category1Id',
-                dataIndex: 'category1Id'
-            }, {
-                title: '分类二',
-                key: 'category2Id',
-                dataIndex: 'category2Id'
+                title: '父分类',
+                key: 'parent',
+                dataIndex: 'parent'
             },
             {
-                title: '文档数',
-                dataIndex: 'docCount'
-            },
-            {
-                title: '阅读数',
-                dataIndex: 'viewCount'
-            },
-            {
-                title: '点赞数',
-                dataIndex: 'voteCount'
+                title: '顺序',
+                dataIndex: 'sort'
             },
             {
                 title: 'Action',
