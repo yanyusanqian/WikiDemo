@@ -1,0 +1,52 @@
+package com.jiawa.wiki.controller;
+
+
+import com.jiawa.wiki.req.DocQueryReq;
+import com.jiawa.wiki.req.DocSaveReq;
+import com.jiawa.wiki.resp.DocQueryResp;
+import com.jiawa.wiki.resp.CommonResp;
+import com.jiawa.wiki.resp.PageResp;
+import com.jiawa.wiki.service.DocService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequestMapping("/doc")
+public class DocController {
+    
+    @Resource
+    private DocService docService;
+
+    @GetMapping("/all")
+    public CommonResp all(){
+        CommonResp<List<DocQueryResp>> response = new CommonResp<>();
+        List<DocQueryResp> list = docService.all();
+        response.setContent(list);
+        return response;
+    }
+
+    @GetMapping("/list")
+    public CommonResp list(@Valid DocQueryReq docQueryReq){
+        CommonResp<PageResp<DocQueryResp>> response = new CommonResp<>();
+        PageResp<DocQueryResp> list = docService.list(docQueryReq);
+        response.setContent(list);
+        return response;
+    }
+
+    @PostMapping ("/save")
+    public CommonResp save(@Valid @RequestBody DocSaveReq docSaveReq){
+        CommonResp response = new CommonResp<>();
+        docService.save(docSaveReq);
+        return response;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public CommonResp delete(@PathVariable Long id){
+        CommonResp response = new CommonResp<>();
+        docService.delete(id);
+        return response;
+    }
+}

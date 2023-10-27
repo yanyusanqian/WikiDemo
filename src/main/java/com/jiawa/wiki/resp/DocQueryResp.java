@@ -4,10 +4,14 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class CategoryQueryResp {
+public class DocQueryResp {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long ebook_id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JSONField(serializeUsing = ToStringSerializer.class)
@@ -17,12 +21,24 @@ public class CategoryQueryResp {
 
     private Integer sort;
 
+    private Integer view_count;
+
+    private Integer vote_count;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getEbook_id() {
+        return ebook_id;
+    }
+
+    public void setEbook_id(Long ebook_id) {
+        this.ebook_id = ebook_id;
     }
 
     public Long getParent() {
@@ -49,17 +65,32 @@ public class CategoryQueryResp {
         this.sort = sort;
     }
 
+    public Integer getView_count() {
+        return view_count;
+    }
+
+    public void setView_count(Integer view_count) {
+        this.view_count = view_count;
+    }
+
+    public Integer getVote_count() {
+        return vote_count;
+    }
+
+    public void setVote_count(Integer vote_count) {
+        this.vote_count = vote_count;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", parent=").append(parent);
-        sb.append(", name=").append(name);
-        sb.append(", sort=").append(sort);
-        sb.append("]");
-        return sb.toString();
+        return "DocQueryResp{" +
+                "id=" + id +
+                ", ebook_id=" + ebook_id +
+                ", parent=" + parent +
+                ", name='" + name + '\'' +
+                ", sort=" + sort +
+                ", view_count=" + view_count +
+                ", vote_count=" + vote_count +
+                '}';
     }
 }

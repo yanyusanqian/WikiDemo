@@ -11,6 +11,8 @@ public class CategorySaveReq {
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long parent;
 
     @NotNull(message = "【名称】不能为空")

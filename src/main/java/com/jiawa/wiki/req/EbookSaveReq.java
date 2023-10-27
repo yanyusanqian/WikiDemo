@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 public class EbookSaveReq {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JSONField(serializeUsing = ToStringSerializer.class)
+    @NotNull(message = "【id】不能为空")
     private Long id;
 
     @NotNull(message = "【名称】不能为空")
