@@ -91,23 +91,37 @@ export default defineComponent({
             });
         };
 
-        const isShowWelcome = ref(true);
-        const handleClick = (value: any) => {
-            isShowWelcome.value = value.key === 'welcome';
-        }
-
-        onMounted(() => {
-            handleQueryCategory();
+        /**
+         * 查询电子书
+         */
+        const handleQueryEbook = () => {
             axios.get("/ebook/list", {
                 params: {
                     page: 1,
-                    size: 1000
+                    size: 1000,
+                    category2Id: category2Id,
                 }
             }).then((response) => {
                 const data = response.data;
                 ebooks.value = data.content.list;
                 // ebooks1.books = data.content;
             });
+        }
+
+        const isShowWelcome = ref(true);
+        let category2Id = 0;
+        const handleClick = (value: any) => {
+            if(value.key === 'welcome'){
+                isShowWelcome.value =  true;
+            }else{
+                category2Id = value.key;
+                isShowWelcome.value = false;
+                handleQueryEbook();
+            }
+        }
+
+        onMounted(() => {
+            handleQueryCategory();
         });
 
         return {
