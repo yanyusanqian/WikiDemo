@@ -267,6 +267,15 @@ export default defineComponent({
                     level1.value = [];
                     level1.value = Tool.array2Tree(categorys, 0);
                     console.log("树型结构:", level1.value);
+
+                    /**
+                     * 加载电子书列表
+                     */
+                    handleQuery({
+                        // 和后端名称要一致才能正确映射
+                        page: 1,
+                        size: pagination.value.pageSize
+                    });
                 } else {
                     message.error(data.message);
                 }
@@ -276,7 +285,6 @@ export default defineComponent({
         const getCategoryName = (cid : number) => {
           let result = "";
           categorys.forEach((item: any) => {
-              console.log(item.id)
               if(item.id == cid){
                   result = item.name;
               }
@@ -286,11 +294,7 @@ export default defineComponent({
 
         onMounted(() => {
             handleQueryCategory();
-            handleQuery({
-                // 和后端名称要一致才能正确映射
-                page: 1,
-                size: pagination.value.pageSize
-            });
+
         })
 
         return {
