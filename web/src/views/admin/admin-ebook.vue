@@ -276,9 +276,9 @@ export default defineComponent({
         const getCategoryName = (cid : number) => {
           let result = "";
           categorys.forEach((item: any) => {
-              if(item.id === cid){
+              console.log(item.id)
+              if(item.id == cid){
                   result = item.name;
-                  console.log("***"+ item.name);
               }
           });
           return result;
