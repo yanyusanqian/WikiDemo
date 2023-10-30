@@ -11,7 +11,7 @@ public class DocQueryResp {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JSONField(serializeUsing = ToStringSerializer.class)
-    private Long ebook_id;
+    private Long ebookId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JSONField(serializeUsing = ToStringSerializer.class)
@@ -21,9 +21,9 @@ public class DocQueryResp {
 
     private Integer sort;
 
-    private Integer view_count;
+    private Integer viewCount;
 
-    private Integer vote_count;
+    private Integer voteCount;
 
     public Long getId() {
         return id;
@@ -33,12 +33,12 @@ public class DocQueryResp {
         this.id = id;
     }
 
-    public Long getEbook_id() {
-        return ebook_id;
+    public Long getEbookId() {
+        return ebookId;
     }
 
-    public void setEbook_id(Long ebook_id) {
-        this.ebook_id = ebook_id;
+    public void setEbookId(Long ebookId) {
+        this.ebookId = ebookId;
     }
 
     public Long getParent() {
@@ -65,32 +65,32 @@ public class DocQueryResp {
         this.sort = sort;
     }
 
-    public Integer getView_count() {
-        return view_count;
+    public Integer getViewCount() {
+        return viewCount;
     }
 
-    public void setView_count(Integer view_count) {
-        this.view_count = view_count;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 
-    public Integer getVote_count() {
-        return vote_count;
+    public Integer getVoteCount() {
+        return voteCount;
     }
 
-    public void setVote_count(Integer vote_count) {
-        this.vote_count = vote_count;
+    public void setVoteCount(Integer voteCount) {
+        this.voteCount = voteCount;
     }
 
     @Override
     public String toString() {
         return "DocQueryResp{" +
                 "id=" + id +
-                ", ebook_id=" + ebook_id +
+                ", ebookId=" + ebookId +
                 ", parent=" + parent +
                 ", name='" + name + '\'' +
                 ", sort=" + sort +
-                ", view_count=" + view_count +
-                ", vote_count=" + vote_count +
+                ", viewCount=" + viewCount +
+                ", voteCount=" + voteCount +
                 '}';
     }
 }

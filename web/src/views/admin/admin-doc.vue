@@ -68,28 +68,11 @@
                     tree-default-expand-all
                     :replaceFields="{title:'name', key:'id', value:'id'}"
                 >
-<!--                    <template #title="{ key, value }">
-                        <span style="color: #08c" v-if="key === '0-0-1'">Child Node1 {{ value }}</span>
-                    </template>-->
                 </a-tree-select>
             </a-form-item>
             <a-form-item label="排序">
                 <a-input v-model:value="doc.sort"/>
             </a-form-item>
-            <a-form-item label="父文档">
-                <a-select
-                    ref="select"
-                    v-model:value="doc.parent"
-                    style="width: 120px"
-                >
-                    <a-select-option value="0">无</a-select-option>
-                    <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="doc.id === c.id">
-                        {{c.name}}
-                    </a-select-option>
-
-                </a-select>
-            </a-form-item>
-
         </a-form>
     </a-modal>
 
@@ -101,6 +84,7 @@ import axios from 'axios';
 import wrapperRaf from "ant-design-vue/lib/_util/raf";
 import {message} from "ant-design-vue";
 import {Tool} from "@/util/tool";
+import {useRoute} from "vue-router";
 
 export default defineComponent({
     name: 'AdminDoc',
@@ -111,6 +95,16 @@ export default defineComponent({
         }
     },
     setup() {
+        const route = useRoute();
+
+        console.log("路由：", route);
+        console.log("route.path：", route.path);
+        console.log("route.query：", route.query);
+        console.log("route.param：", route.params);
+        console.log("route.fullPath：", route.fullPath);
+        console.log("route.name：", route.name);
+        console.log("route.meta：", route.meta);
+
         const param = ref();
         param.value = {};
         const docs = ref();
@@ -182,6 +176,10 @@ export default defineComponent({
         // ---------------表单----------------
 
         const doc = ref({});
+        doc.value = {
+            ebookId: route.query.ebookId,
+        };
+        console.log(doc.value);
         const modalVisible = ref(false);
         const modalLoading = ref(false);
         // 因为树选择组件的属性状态，会随着当前编辑的节点而变化，所以单独声明一个响应式变量
@@ -204,6 +202,11 @@ export default defineComponent({
             });
         };
 
+        /**
+         * 递归设置当前节点及其子孙节点都不可选
+         * @param treeSelectData
+         * @param id
+         */
         const setDisable = (treeSelectData: any, id: any) => {
             // console.log(treeSelectData, id);
             // 遍历数组，即遍历某一层节点
@@ -253,8 +256,12 @@ export default defineComponent({
          */
         const add = () => {
             modalVisible.value = true;
-            doc.value = {};
+            doc.value = {
+                ebookId: route.query.ebookId,
+            };
+            console.log(doc.value)
 
+            treeSelectData.value = Tool.copy(level1.value) || [];
             treeSelectData.value.unshift({id: 0, name:'无'});
         }
 

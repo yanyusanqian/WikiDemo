@@ -82,6 +82,8 @@ public class DocService {
         LOG.info("DocSaveReq.toString():{}" ,docSaveReq.toString());
         Doc doc = CopyUtils.copy(docSaveReq, Doc.class);
         if(ObjectUtils.isEmpty(docSaveReq.getId())){
+
+            LOG.info("电子书id:{}",doc.getEbookId());
             // 新增
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
