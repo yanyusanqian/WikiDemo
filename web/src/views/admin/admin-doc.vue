@@ -79,12 +79,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from 'vue';
+import {createVNode, defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
 import wrapperRaf from "ant-design-vue/lib/_util/raf";
-import {message} from "ant-design-vue";
+import {message, Modal} from "ant-design-vue";
 import {Tool} from "@/util/tool";
 import {useRoute} from "vue-router";
+import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
 export default defineComponent({
     name: 'AdminDoc',
@@ -235,7 +236,8 @@ export default defineComponent({
             }
         };
 
-        let ids: Array<string> = [];
+        let deleteIds: Array<string> = [];
+        let deleteNames: Array<string> = [];
         /**
          * 递归获得当前节点及其子孙节点id
          * @param treeSelectData
@@ -247,7 +249,8 @@ export default defineComponent({
             for (let i = 0; i < treeSelectData.length; i++) {
                 const node = treeSelectData[i];
                 if (node.id === id) {
-                    ids.push(id);
+                    deleteIds.push(id);
+                    deleteNames.push(node.name);
                     const children = node.children;
                     if (Tool.isNotEmpty(children)) {
                         for (let j = 0; j < children.length; j++) {
@@ -295,13 +298,26 @@ export default defineComponent({
         }
 
         const handleDelete = (id: number) => {
+            deleteIds.length = 0;
+            deleteNames.length = 0;
             getDeleteIds(level1.value, id);
-            axios.delete("/doc/delete/" + ids.join(",")).then((response) => {
-                const data = response.data;
-                if (data.success) {
-                    // 重新加载页面
-                    handleQuery()
-                }
+            Modal.confirm({
+                title: () => '重要提醒',
+                content: () => '将删除: 【' + deleteNames.toString() +  '】，删除后不可恢复，确认删除？',
+                icon: () => createVNode(ExclamationCircleOutlined),
+                cancelText:() => '取消',
+                onOk() {
+                    axios.delete("/doc/delete/" + deleteIds.join(",")).then((response) => {
+                        const data = response.data;
+                        if (data.success) {
+                            // 重新加载页面
+                            handleQuery()
+                        }
+                    });
+                },
+                onCancel(){
+                    console.log('cancel');
+                },
             });
         };
 
