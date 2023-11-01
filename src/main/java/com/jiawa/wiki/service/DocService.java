@@ -2,8 +2,10 @@ package com.jiawa.wiki.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jiawa.wiki.domain.Content;
 import com.jiawa.wiki.domain.Doc;
 import com.jiawa.wiki.domain.DocExample;
+import com.jiawa.wiki.mapper.ContentMapper;
 import com.jiawa.wiki.mapper.DocMapper;
 import com.jiawa.wiki.req.DocQueryReq;
 import com.jiawa.wiki.req.DocSaveReq;
@@ -25,6 +27,9 @@ public class DocService {
 
     @Resource
     private DocMapper docMapper;
+
+    @Resource
+    private ContentMapper contentMapper;
 
     @Resource
     private SnowFlake snowFlake;
@@ -81,15 +86,23 @@ public class DocService {
     public void save(DocSaveReq docSaveReq){
         LOG.info("DocSaveReq.toString():{}" ,docSaveReq.toString());
         Doc doc = CopyUtils.copy(docSaveReq, Doc.class);
+        // 只复制DocSaveReq里的content
+        Content content = CopyUtils.copy(docSaveReq, Content.class);
         if(ObjectUtils.isEmpty(docSaveReq.getId())){
-
             LOG.info("电子书id:{}",doc.getEbookId());
             // 新增
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
+            content.setId(doc.getId());
+            contentMapper.insert(content);
         }else{
             // 更新
             docMapper.updateByPrimaryKey(doc);
+            // 带大字段更新
+            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+            if(count == 0){
+                contentMapper.insert(content);
+            }
         }
     }
 
