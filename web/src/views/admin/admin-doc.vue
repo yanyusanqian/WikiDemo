@@ -18,13 +18,16 @@
                         </a-form>
                     </p>
 
+                    <!--初始时表格是没数据的，所以defaultExpandAllRows属性一开始不生效，只有加上这个v-if判断才能使属性生效-->
                     <a-table
+                        v-if="level1.length > 0"
                             :columns="columns"
                             :row-key="record => record.id"
                             :data-source="level1"
                             :pagination="false"
                             :loading="loading"
                             size="small"
+                            :defaultExpandAllRows="true"
                     >
                         <template #name="{ text,record }">
                             {{record.sort}} {{text}}
@@ -160,7 +163,7 @@ export default defineComponent({
          * }]
          */
         const level1 = ref();
-
+        level1.value= [];
 
         /**
          * 数据查询
