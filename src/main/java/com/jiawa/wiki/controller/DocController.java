@@ -51,4 +51,12 @@ public class DocController {
         docService.delete(list);
         return response;
     }
+
+    @GetMapping("/find-content/{id}")
+    public CommonResp findContent(@Valid Long id){
+        CommonResp<String> response = new CommonResp<>();
+        String content = docService.findContent(id);
+        response.setContent(content);
+        return response;
+    }
 }
