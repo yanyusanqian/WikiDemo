@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jiawa.wiki.domain.User;
 import com.jiawa.wiki.domain.UserExample;
+import com.jiawa.wiki.exception.BusinessException;
+import com.jiawa.wiki.exception.BusinessExceptionCode;
 import com.jiawa.wiki.mapper.UserMapper;
 import com.jiawa.wiki.req.UserQueryReq;
 import com.jiawa.wiki.req.UserSaveReq;
@@ -14,9 +16,11 @@ import com.jiawa.wiki.utils.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -69,12 +73,17 @@ public class UserService {
      * 保存，由id判断是更新还是新增
      */
     public void save(UserSaveReq userSaveReq){
-        LOG.info("UserSaveReq.toString():{}" ,userSaveReq.toString());
         User user = CopyUtils.copy(userSaveReq, User.class);
         if(ObjectUtils.isEmpty(userSaveReq.getId())){
-            // 新增
-            user.setId(snowFlake.nextId());
-            userMapper.insert(user);
+            if(ObjectUtils.isEmpty(selectByLoginName(userSaveReq.getLoginName()))){
+                // 新增
+                user.setId(snowFlake.nextId());
+                userMapper.insert(user);
+            }else{
+                // 用户名已存在
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
+
         }else{
             // 更新
             userMapper.updateByPrimaryKey(user);
@@ -83,5 +92,17 @@ public class UserService {
 
     public void delete(Long id){
         userMapper.deleteByPrimaryKey(id);
+    }
+
+    public User selectByLoginName(String loginName){
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andLoginNameEqualTo(loginName);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if(CollectionUtils.isEmpty(userList)){
+            return null;
+        }else{
+            return userList.get(0);
+        }
     }
 }
