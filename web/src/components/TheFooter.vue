@@ -1,6 +1,6 @@
 <template>
     <a-layout-footer style="text-align: center">
-        jiawa电子书 ©2023 Created by Ant UED
+        电子书 ©2023 Created by Ant UED
     </a-layout-footer>
 </template>
 <script lang="ts">
