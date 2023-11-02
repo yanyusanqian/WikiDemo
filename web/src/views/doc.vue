@@ -58,6 +58,7 @@ export default defineComponent({
          * 内容查询
          **/
         const handleQueryContent = (id: number) => {
+            console.log("iddddddddddd:"+id);
             axios.get("/doc/find-content/" + id).then((response) => {
                 const data = response.data;
                 if (data.success) {
@@ -82,6 +83,7 @@ export default defineComponent({
                     level1.value = Tool.array2Tree(docs.value, 0);
 
                     if (Tool.isNotEmpty(level1)) {
+                        console.log(level1);
                         defaultSelectedKeys.value = [level1.value[0].id];
                         handleQueryContent(level1.value[0].id);
                         // 初始显示文档信息

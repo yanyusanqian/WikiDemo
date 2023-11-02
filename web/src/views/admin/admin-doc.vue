@@ -135,6 +135,10 @@ export default defineComponent({
 
         const loading = ref(false);
 
+        // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
+        const treeSelectData = ref();
+        treeSelectData.value = [];
+
         const columns = [
             {
                 title: '名称',
@@ -182,6 +186,9 @@ export default defineComponent({
                     level1.value = [];
                     level1.value = Tool.array2Tree(docs.value, 0);
                     console.log("树型结构:", level1.value);
+
+                    treeSelectData.value = Tool.copy(level1.value) || [];
+                    treeSelectData.value.unshift({id: 0, name:'无'})
                 } else {
                     message.error(data.message);
                 }
@@ -198,9 +205,6 @@ export default defineComponent({
         console.log(doc.value);
         const modalVisible = ref(false);
         const modalLoading = ref(false);
-        // 因为树选择组件的属性状态，会随着当前编辑的节点而变化，所以单独声明一个响应式变量
-        const treeSelectData = ref();
-        treeSelectData.value = [];
 
         const editor = new E("#content");
         editor.config.zIndex = 0;
@@ -289,7 +293,7 @@ export default defineComponent({
          * 内容查询
          */
         const handleQueryContent = () => {
-            axios.get("/doc/find-content/", doc.value.id).then((response) => {
+            axios.get("/doc/find-content/" + doc.value.id).then((response) => {
                 const data = response.data;
                 if (data.success) {
                     editor.txt.html(data.content)
@@ -331,7 +335,6 @@ export default defineComponent({
             doc.value = {
                 ebookId: route.query.ebookId,
             };
-            console.log(doc.value)
 
             treeSelectData.value = Tool.copy(level1.value) || [];
             treeSelectData.value.unshift({id: 0, name: '无'});

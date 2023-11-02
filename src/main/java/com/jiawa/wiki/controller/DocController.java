@@ -7,6 +7,9 @@ import com.jiawa.wiki.resp.DocQueryResp;
 import com.jiawa.wiki.resp.CommonResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.service.DocService;
+import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,6 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/doc")
 public class DocController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DocController.class);
     
     @Resource
     private DocService docService;
@@ -53,7 +58,8 @@ public class DocController {
     }
 
     @GetMapping("/find-content/{id}")
-    public CommonResp findContent(@Valid Long id){
+    public CommonResp findContent(@PathVariable Long id){
+        LOG.info("DocControl id:{}",id);
         CommonResp<String> response = new CommonResp<>();
         String content = docService.findContent(id);
         response.setContent(content);

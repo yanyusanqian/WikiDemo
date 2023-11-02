@@ -124,6 +124,7 @@ public class DocService {
     }
 
     public String findContent(Long id){
+        LOG.info("DocService id:{}",id);
        Content content = contentMapper.selectByPrimaryKey(id);
        return content.getContent();
     }
