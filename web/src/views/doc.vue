@@ -4,6 +4,7 @@
             <h3 v-if="level1.length === 0">对不起，找不到相关文档！</h3>
             <a-row>
                 <a-col :span="6">
+                    <!--defaultSelectedKeys默认选择-->
                     <a-tree
                             v-if="level1.length > 0"
                             :tree-data="level1"
@@ -56,20 +57,6 @@ export default defineComponent({
         level1.value = [];
 
         /**
-         * 内容查询
-         **/
-        const handleQueryContent = (id: number) => {
-            axios.get("/doc/find-content/" + id).then((response) => {
-                const data = response.data;
-                if (data.success) {
-                    html.value = data.content;
-                } else {
-                    message.error(data.message);
-                }
-            });
-        };
-
-        /**
          * 数据查询
          **/
         const handleQuery = () => {
@@ -84,11 +71,26 @@ export default defineComponent({
 
                     if (Tool.isNotEmpty(level1)) {
                         console.log(level1);
+                        // 设置默认选择第一个节点
                         defaultSelectedKeys.value = [level1.value[0].id];
                         handleQueryContent(level1.value[0].id);
                         // 初始显示文档信息
                         doc.value = level1.value[0];
                     }
+                } else {
+                    message.error(data.message);
+                }
+            });
+        };
+
+        /**
+         * 内容查询
+         **/
+        const handleQueryContent = (id: number) => {
+            axios.get("/doc/find-content/" + id).then((response) => {
+                const data = response.data;
+                if (data.success) {
+                    html.value = data.content;
                 } else {
                     message.error(data.message);
                 }

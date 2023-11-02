@@ -210,7 +210,6 @@ export default defineComponent({
         doc.value = {
             ebookId: route.query.ebookId,
         };
-        console.log(doc.value);
         const modalVisible = ref(false);
         const modalLoading = ref(false);
 
