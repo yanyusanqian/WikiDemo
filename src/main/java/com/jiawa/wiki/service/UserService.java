@@ -85,8 +85,8 @@ public class UserService {
             }
 
         }else{
-            // 更新
-            userMapper.updateByPrimaryKey(user);
+            // 更新 Selective当user内有值才更新
+            userMapper.updateByPrimaryKeySelective(user);
         }
     }
 
