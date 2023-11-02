@@ -34,13 +34,13 @@ public class DocService {
     @Resource
     private SnowFlake snowFlake;
 
-    public List<DocQueryResp> all(Long ebookId){
+    public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
         // 一定按条件查询，防止前端通过链接查询出所有数据
         docExample.createCriteria().andEbookIdEqualTo(ebookId);
         docExample.setOrderByClause("sort asc");
         List<Doc> docList = docMapper.selectByExample(docExample);
-        LOG.info("EEEEEEEEDoclist:{}",docList);
+        LOG.info("EEEEEEEEDoclist:{}", docList);
 
         List<DocQueryResp> respList = CopyUtils.copyList(docList, DocQueryResp.class);
 
@@ -48,19 +48,19 @@ public class DocService {
         return respList;
     }
 
-    public PageResp<DocQueryResp> list(DocQueryReq docQueryReq){
+    public PageResp<DocQueryResp> list(DocQueryReq docQueryReq) {
         DocExample docExample = new DocExample();
         docExample.setOrderByClause("sort asc");
         DocExample.Criteria criteria = docExample.createCriteria();
         PageHelper.startPage(docQueryReq.getPage(), docQueryReq.getSize());
         List<Doc> docList = docMapper.selectByExample(docExample);
-        LOG.info("EEEEEEEEDoclist:{}",docList);
+        LOG.info("EEEEEEEEDoclist:{}", docList);
 
         PageInfo<Doc> pageInfo = new PageInfo<>(docList);
         // 总行数
-        LOG.info("总行数:{}",pageInfo.getTotal());
+        LOG.info("总行数:{}", pageInfo.getTotal());
         // 总页数
-        LOG.info("总行数:{}",pageInfo.getPages());
+        LOG.info("总行数:{}", pageInfo.getPages());
 
         // List<DocResp> respList = new ArrayList<>();
         // for (Doc doc : docList) {
@@ -77,7 +77,7 @@ public class DocService {
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
 
-        LOG.info("PPPPPageResp:{}",pageResp);
+        LOG.info("PPPPPageResp:{}", pageResp);
 
         return pageResp;
     }
@@ -85,48 +85,51 @@ public class DocService {
     /**
      * 保存，由id判断是更新还是新增
      */
-    public void save(DocSaveReq docSaveReq){
-        LOG.info("DocSaveReq.toString():{}" ,docSaveReq.toString());
+    public void save(DocSaveReq docSaveReq) {
+        LOG.info("DocSaveReq.toString():{}", docSaveReq.toString());
         Doc doc = CopyUtils.copy(docSaveReq, Doc.class);
         // 只复制DocSaveReq里的content
         Content content = CopyUtils.copy(docSaveReq, Content.class);
-        if(ObjectUtils.isEmpty(docSaveReq.getId())){
-            LOG.info("电子书id:{}",doc.getEbookId());
+        if (ObjectUtils.isEmpty(docSaveReq.getId())) {
+            LOG.info("电子书id:{}", doc.getEbookId());
             // 新增
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
             content.setId(doc.getId());
             contentMapper.insert(content);
-        }else{
+        } else {
             // 更新
             docMapper.updateByPrimaryKey(doc);
             // 带大字段更新
             int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
-            if(count == 0){
+            if (count == 0) {
                 contentMapper.insert(content);
             }
         }
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         docMapper.deleteByPrimaryKey(id);
     }
 
     /**
      * 根据id列表删除一串
+     *
      * @param ids
      */
-    public void delete(List<String> ids){
+    public void delete(List<String> ids) {
         DocExample docExample = new DocExample();
         DocExample.Criteria criteria = docExample.createCriteria();
         criteria.andIdIn(ids);
         docMapper.deleteByExample(docExample);
     }
 
-    public String findContent(Long id){
-        LOG.info("DocService id:{}",id);
-       Content content = contentMapper.selectByPrimaryKey(id);
-       return content.getContent();
+    public String findContent(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        if (ObjectUtils.isEmpty(content))
+            return "";
+        else
+            return content.getContent();
     }
 
 }
