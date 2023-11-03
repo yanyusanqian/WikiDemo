@@ -139,4 +139,5 @@ CREATE TABLE `user`  (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-
+INSERT INTO `user` VALUES (1, 'test', '测试 ', 'test');
+INSERT INTO `user` VALUES (375561915369394176, 'test1', 'test1', '7354a1d413535a6c0dc5c209e198d799');
