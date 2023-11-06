@@ -8,6 +8,8 @@ import com.jiawa.wiki.resp.CommonResp;
 import com.jiawa.wiki.resp.UserQueryResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class UserController {
 
-
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
     @Resource
     private UserService userService;
 
