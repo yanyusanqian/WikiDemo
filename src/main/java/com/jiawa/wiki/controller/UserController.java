@@ -1,10 +1,12 @@
 package com.jiawa.wiki.controller;
 
 
+import com.jiawa.wiki.req.UserLoginReq;
 import com.jiawa.wiki.req.UserQueryReq;
 import com.jiawa.wiki.req.UserResetPasswordReq;
 import com.jiawa.wiki.req.UserSaveReq;
 import com.jiawa.wiki.resp.CommonResp;
+import com.jiawa.wiki.resp.UserLoginResp;
 import com.jiawa.wiki.resp.UserQueryResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.service.UserService;
@@ -53,6 +55,15 @@ public class UserController {
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp response = new CommonResp<>();
         userService.resetPassword(req);
+        return response;
+    }
+
+    @PostMapping ("/login")
+    public CommonResp login(@Valid @RequestBody UserLoginReq req){
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp<UserLoginResp> response = new CommonResp<>();
+        UserLoginResp userLoginResp = userService.login(req);
+        response.setContent(userLoginResp);
         return response;
     }
 }
