@@ -116,7 +116,7 @@ import {message, Modal} from "ant-design-vue";
 import {Tool} from "@/util/tool";
 import {useRoute} from "vue-router";
 import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
-import E from 'wangeditor'
+import E from "wangeditor";
 
 export default defineComponent({
     name: 'AdminDoc',
