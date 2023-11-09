@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 public class CategorySaveReq {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -15,10 +15,10 @@ public class CategorySaveReq {
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long parent;
 
-    @NotNull(message = "【名称】不能为空")
+    @NotEmpty(message = "【名称】不能为空")
     private String name;
 
-    @NotNull(message = "【排序】不能为空")
+    @NotEmpty(message = "【排序】不能为空")
     private Integer sort;
 
     public Long getId() {

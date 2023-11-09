@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 public class UserLoginResp {
@@ -12,10 +12,10 @@ public class UserLoginResp {
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
 
-    @NotNull(message = "【用户名】不能为空")
+    @NotEmpty(message = "【用户名】不能为空")
     private String loginName;
 
-    @NotNull(message = "【昵称】不能为空")
+    @NotEmpty(message = "【昵称】不能为空")
     private String name;
 
     public Long getId() {
