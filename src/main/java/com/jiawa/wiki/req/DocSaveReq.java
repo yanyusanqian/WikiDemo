@@ -5,24 +5,25 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class DocSaveReq {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
 
-    @NotEmpty(message = "【电子书id】不能为空")
+    @NotNull(message = "【电子书id】不能为空")
     private Long ebookId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JSONField(serializeUsing = ToStringSerializer.class)
-    @NotEmpty(message = "【父文档】不能为空")
+    @NotNull(message = "【父文档】不能为空")
     private Long parent;
 
     @NotEmpty(message = "【名称】不能为空")
     private String name;
 
-    @NotEmpty(message = "【顺序】不能为空")
+    @NotNull(message = "【顺序】不能为空")
     private Integer sort;
 
     private Integer viewCount;

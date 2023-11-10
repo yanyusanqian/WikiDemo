@@ -5,11 +5,12 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class EbookSaveReq {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JSONField(serializeUsing = ToStringSerializer.class)
-    @NotEmpty(message = "【id】不能为空")
+    @NotNull(message = "【id】不能为空")
     private Long id;
 
     @NotEmpty(message = "【名称】不能为空")

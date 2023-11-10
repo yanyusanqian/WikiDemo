@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class CategorySaveReq {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -18,7 +19,7 @@ public class CategorySaveReq {
     @NotEmpty(message = "【名称】不能为空")
     private String name;
 
-    @NotEmpty(message = "【排序】不能为空")
+    @NotNull(message = "【排序】不能为空")
     private Integer sort;
 
     public Long getId() {

@@ -5,9 +5,8 @@ spring:
     username: wikidev
     password: wikidev
   redis:
-    host: r-uf61jbcdaxobsifyctpd.redis.rds.aliyuncs.com
+    host: 127.0.0.1
     port: 6379
-    password: Redis000
 
 
 

@@ -75,9 +75,9 @@ public class UserController {
         UserLoginResp userLoginResp = userService.login(req);
 
         Long token = snowFlake.nextId();
-        LOG.info("生成单点登录token:{}，并放入redis中", token);
+        LOG.info("生成单点登录token:{}，并放入redis中", token.toString());
         userLoginResp.setToken(token.toString());
-        redisTemplate.opsForValue().set(token, JSON.toJSONString(userLoginResp),3600*24, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(token.toString(), JSON.toJSONString(userLoginResp),3600*24, TimeUnit.SECONDS);
         response.setContent(userLoginResp);
         return response;
     }
