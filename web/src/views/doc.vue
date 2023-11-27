@@ -16,6 +16,14 @@
                     </a-tree>
                 </a-col>
                 <a-col :span="18">
+                    <div>
+                        <h2>{{doc.name}}</h2>
+                        <div>
+                            <span>阅读数：{{doc.viewCount}}</span> &nbsp; &nbsp;
+                            <span>点赞数：{{doc.voteCount}}</span>
+                        </div>
+                        <a-divider style="height: 2px; background-color: #9999cc"/>
+                    </div>
                     <div class="wangeditor" :innerHTML="html"></div>
                 </a-col>
             </a-row>
@@ -69,8 +77,8 @@ export default defineComponent({
                     level1.value = [];
                     level1.value = Tool.array2Tree(docs.value, 0);
 
-                    if (Tool.isNotEmpty(level1)) {
-                        console.log(level1);
+                    if (Tool.isNotEmpty(level1.value)) {
+                        console.log("level1",level1);
                         // 设置默认选择第一个节点
                         defaultSelectedKeys.value = [level1.value[0].id];
                         handleQueryContent(level1.value[0].id);
