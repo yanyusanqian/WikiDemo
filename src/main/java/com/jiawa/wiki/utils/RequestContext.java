@@ -3,6 +3,7 @@ package com.jiawa.wiki.utils;
 
 import java.io.Serializable;
 
+
 public class RequestContext implements Serializable {
 
     private static ThreadLocal<String> remoteAddr = new ThreadLocal<>();
