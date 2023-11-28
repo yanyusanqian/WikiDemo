@@ -54,8 +54,8 @@ public class DocService {
     private WsService wsService;
 
 
-    @Resource
-    private RocketMQTemplate rocketMQTemplate;
+    //@Resource
+    //private RocketMQTemplate rocketMQTemplate;
 
 
     public List<DocQueryResp> all(Long ebookId) {
@@ -181,9 +181,9 @@ public class DocService {
         Doc doc = docMapper.selectByPrimaryKey(id);
         // 获得流水号，保证不同线程内的同一流程中的流水号一致，方便运维
         String logId = MDC.get("LOG_ID");
-        //wsService.sendInfo("【"+doc.getName() + "】被点赞",logId);
+        wsService.sendInfo("【"+doc.getName() + "】被点赞",logId);
 
-        rocketMQTemplate.convertAndSend("VOTE_TOPIC","【"+doc.getName() + "】被点赞");
+        //rocketMQTemplate.convertAndSend("VOTE_TOPIC","【"+doc.getName() + "】被点赞");
     }
 
     /**
