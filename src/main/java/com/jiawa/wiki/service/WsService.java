@@ -15,6 +15,7 @@ public class WsService {
 
     /**
      * 异步推送消息，为了和点赞+1功能解耦，使得两者之间的关联减小
+     * Async注解需要调用的方法跟解耦的方法不在同一个类里
      * @param message
      */
     @Async

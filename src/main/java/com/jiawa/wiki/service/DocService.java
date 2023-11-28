@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -102,7 +103,12 @@ public class DocService {
 
     /**
      * 保存，由id判断是更新还是新增
+     * 新增时需要同时像两张表插入信息，所以要加上事务
+     * 防止向一张表插入成功，另一张表没成功，导致数据信息错误的情况
+     * springboot中添加事务就是在方法前加上Transactional注解
+     * 该注解与Async一样，方法本身与调用方法的方法不能在同一个类里，否则就不生效
      */
+    @Transactional
     public void save(DocSaveReq docSaveReq) {
         LOG.info("DocSaveReq.toString():{}", docSaveReq.toString());
         Doc doc = CopyUtils.copy(docSaveReq, Doc.class);
