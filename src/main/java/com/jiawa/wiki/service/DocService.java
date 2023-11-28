@@ -168,7 +168,9 @@ public class DocService {
         }
         // 推送消息
         Doc doc = docMapper.selectByPrimaryKey(id);
-        wsService.sendInfo("【"+doc.getName() + "】被点赞");
+        // 获得流水号，保证不同线程内的同一流程中的流水号一致，方便运维
+        String logId = MDC.get("LOG_ID");
+        wsService.sendInfo("【"+doc.getName() + "】被点赞",logId);
     }
 
     /**
