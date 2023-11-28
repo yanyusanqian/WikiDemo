@@ -19,6 +19,7 @@ import com.jiawa.wiki.utils.RedisUtil;
 import com.jiawa.wiki.utils.RequestContext;
 import com.jiawa.wiki.utils.SnowFlake;
 import com.jiawa.wiki.websocket.WebSocketServer;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -51,6 +52,10 @@ public class DocService {
 
     @Resource
     private WsService wsService;
+
+
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
 
 
     public List<DocQueryResp> all(Long ebookId) {
@@ -176,7 +181,9 @@ public class DocService {
         Doc doc = docMapper.selectByPrimaryKey(id);
         // 获得流水号，保证不同线程内的同一流程中的流水号一致，方便运维
         String logId = MDC.get("LOG_ID");
-        wsService.sendInfo("【"+doc.getName() + "】被点赞",logId);
+        //wsService.sendInfo("【"+doc.getName() + "】被点赞",logId);
+
+        rocketMQTemplate.convertAndSend("VOTE_TOPIC","【"+doc.getName() + "】被点赞");
     }
 
     /**
