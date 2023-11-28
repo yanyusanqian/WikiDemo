@@ -2,9 +2,9 @@
     <a-layout>
         <a-layout-sider width="200" style="background: #fff">
             <a-menu
-                mode="inline"
-                :style="{ height: '100%', borderRight: 0 }"
-                @click="handleClick"
+                    mode="inline"
+                    :style="{ height: '100%', borderRight: 0 }"
+                    @click="handleClick"
             >
                 <a-menu-item key="welcome">
                     <MailOutlined/>
@@ -17,10 +17,10 @@
                             {{ item.name }}
                         </span>
                     </template>
-                    <a-menu-item v-for="child in  item.children" :key="child.id" >
-                        <MailOutlined />
+                    <a-menu-item v-for="child in  item.children" :key="child.id">
+                        <MailOutlined/>
                         <span>
-                            {{child.name}}
+                            {{ child.name }}
                         </span>
                     </a-menu-item>
                 </a-sub-menu>
@@ -31,13 +31,22 @@
             <div class="welcome" v-show="isShowWelcome" style="text-align: center">
                 <h1>欢迎使用电子书</h1>
             </div>
-            <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{gutter : 20, column: 3}" :data-source="ebooks">
+            <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{gutter : 20, column: 3}"
+                    :data-source="ebooks">
                 <template #renderItem="{ item }">
                     <a-list-item key="item.name">
                         <template #actions>
-                            <span v-for="{ type, text } in actions" :key="type">
-                                <component v-bind:is="type" style="margin-right: 8px"/>
-                                {{ text }}
+                            <span>
+                                <component v-bind:is="'FileOutlined'" style="margin-right: 8px"/>
+                                {{ item.docCount }}
+                            </span>
+                            <span>
+                                <component v-bind:is="'UserOutlined'" style="margin-right: 8px"/>
+                                {{ item.viewCount }}
+                            </span>
+                            <span>
+                                <component v-bind:is="'LikeOutlined'" style="margin-right: 8px"/>
+                                {{ item.voteCount }}
                             </span>
                         </template>
 
@@ -75,7 +84,7 @@ export default defineComponent({
          */
         const level1 = ref();
         let categorys: any;
-        const handleQueryCategory = () =>{
+        const handleQueryCategory = () => {
             axios.get("/category/all").then((response) => {
                 const data = response.data;
                 if (data.success) {
@@ -111,9 +120,9 @@ export default defineComponent({
         const isShowWelcome = ref(true);
         let category2Id = 0;
         const handleClick = (value: any) => {
-            if(value.key === 'welcome'){
-                isShowWelcome.value =  true;
-            }else{
+            if (value.key === 'welcome') {
+                isShowWelcome.value = true;
+            } else {
                 category2Id = value.key;
                 isShowWelcome.value = false;
                 handleQueryEbook();
@@ -134,11 +143,11 @@ export default defineComponent({
                 },
                 pageSize: 3,
             },
-            actions: [
+            /*actions: [
                 {type: 'StarOutlined', text: '156'},
                 {type: 'LikeOutlined', text: '156'},
                 {type: 'MessageOutlined', text: '2'},
-            ],
+            ],*/
 
             level1,
             handleClick,
