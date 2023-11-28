@@ -18,6 +18,7 @@ import com.jiawa.wiki.utils.CopyUtils;
 import com.jiawa.wiki.utils.RedisUtil;
 import com.jiawa.wiki.utils.RequestContext;
 import com.jiawa.wiki.utils.SnowFlake;
+import com.jiawa.wiki.websocket.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -45,6 +46,9 @@ public class DocService {
 
     @Resource
     private RedisUtil redisUtil;
+
+    @Resource
+    private WebSocketServer webSocketServer;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -160,6 +164,11 @@ public class DocService {
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
+
+        // 推送消息
+        Doc doc = docMapper.selectByPrimaryKey(id);
+        webSocketServer.sendInfo("【"+doc.getName() + "】被点赞");
+
     }
 
     /**
