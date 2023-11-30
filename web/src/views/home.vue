@@ -29,7 +29,7 @@
 
         <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
             <div class="welcome" v-show="isShowWelcome" style="text-align: center">
-                <h1>欢迎使用电子书</h1>
+                <the-welcome></the-welcome>
             </div>
             <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{gutter : 20, column: 3}"
                     :data-source="ebooks">
@@ -72,9 +72,15 @@ import {LaptopOutlined, NotificationOutlined, UserOutlined} from "@ant-design/ic
 import axios from 'axios';
 import {message} from "ant-design-vue";
 import {Tool} from "@/util/tool";
+import TheWelCome from '@/components/TheWelcome.vue';
+import TheWelcome from "@/components/TheWelcome.vue";
 
 export default defineComponent({
     name: 'Home',
+    components: {
+        TheWelcome,
+        TheWelCome,
+    },
     setup() {
         const ebooks = ref();
         const ebooks1 = reactive({books: []});
