@@ -229,4 +229,11 @@ and t1.ebook_id = t2.id;
 
 -- 获取昨天数据
 select t1.ebook_id, view_count, vote_count from ebook_snapshot t1
-where t1.`date` = date_sub(curdate(), interval 1 day)
+where t1.`date` = date_sub(curdate(), interval 1 day);
+
+update ebook_snapshot t1 left join (select ebook_id, view_count, vote_count from ebook_snapshot
+    where `date` = date_sub(curdate(), interval 1 day)) t2
+on t1.ebook_id = t2.ebook_id
+set t1.view_increase = (t1.view_count - ifnull(t2.view_count, 0)),
+    t1.vote_increase = (t1.vote_count - ifnull(t2.vote_count, 0))
+where t1.`date` = curdate();
