@@ -77,10 +77,6 @@ import TheWelcome from "@/components/TheWelcome.vue";
 
 export default defineComponent({
     name: 'Home',
-    components: {
-        TheWelcome,
-        TheWelCome,
-    },
     setup() {
         const ebooks = ref();
         const ebooks1 = reactive({books: []});
@@ -162,7 +158,10 @@ export default defineComponent({
         }
     },
     components: {
-        UserOutlined, LaptopOutlined, NotificationOutlined,
+        UserOutlined,
+        LaptopOutlined,
+        NotificationOutlined,
+        TheWelcome
     },
 });
 </script>
