@@ -137,7 +137,7 @@ export default defineComponent({
             // 解决方法：把原来的id=main的区域清空，重新初始化
             const mainDom = document.getElementById('main-col');
             if (mainDom) {
-                mainDom.innerHTML = '<div id="main" style="width: 100%;height:300px;"></div>';
+                mainDom.innerHTML = '<div id="main" style="width: 95%;height:300px;"></div>';
             }
             // 基于准备好的dom，初始化echarts实例
             const myChart = echarts.init(document.getElementById('main'));

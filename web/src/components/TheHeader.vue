@@ -1,6 +1,6 @@
 <template>
     <a-layout-header class="header">
-        <div class="logo" />
+        <div class="logo"><img src="../assets/logo.png">WIKI</div>
         <a-menu
                 theme="dark"
                 mode="horizontal"
@@ -137,12 +137,19 @@ export default defineComponent({
 </script>
 
 <style>
-.logo {
-    width: 120px;
-    height: 31px;
+.logo{
+    font-size: 30px;
+    font-weight: bold;
     float: left;
-    color: white;
-    font-size: 18px;
+    color:white;
+    padding-right: 40px;
+}
+.logo img{
+    width: 30px;
+    height: 30px;
+    margin-right: 18px;
+    margin-top: 18px;
+    float: left;
 }
 .login-modal {
     margin-left: auto;
