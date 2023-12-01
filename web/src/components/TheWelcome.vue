@@ -246,7 +246,7 @@ export default defineComponent({
         onMounted(() => {
             getStatistic();
             // testEcharts();
-            // get30DayStatistic();
+            get30DayStatistic();
         });
 
         return {
